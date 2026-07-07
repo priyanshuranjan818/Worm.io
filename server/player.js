@@ -103,11 +103,13 @@ class Player {
 
   /** Current body radius — scales slightly with size for visual feedback */
   get bodyRadius() {
-    return cfg.BODY_RADIUS + Math.sqrt(this.segments.length) * 0.18;
+    const extra = Math.max(0, this.segments.length - cfg.INITIAL_LENGTH);
+    return cfg.BODY_RADIUS + Math.sqrt(extra) * 0.95;
   }
 
   get headRadius() {
-    return cfg.HEAD_RADIUS + Math.sqrt(this.segments.length) * 0.2;
+    const extra = Math.max(0, this.segments.length - cfg.INITIAL_LENGTH);
+    return cfg.HEAD_RADIUS + Math.sqrt(extra) * 1.05;
   }
 
   // ── Input ─────────────────────────────────────────────────────────

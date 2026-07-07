@@ -77,12 +77,17 @@ function buildSegmentGrid(players) {
   const grid = new SpatialGrid(cfg.GRID_CELL_SIZE);
   for (const player of players.values()) {
     if (!player.alive) { continue; }
+    const bodyR = player.bodyRadius;
     for (let i = 0; i < player.segments.length; i++) {
+      // Scale body radius towards tail, matching client rendering
+      const ratio  = 1 - (i / player.segments.length) * 0.28;
+      const radius = Math.max(bodyR * ratio, 3);
       grid.insert({
         x:       player.segments[i].x,
         y:       player.segments[i].y,
         ownerId: player.id,
         segIdx:  i,
+        radius:  radius,
       });
     }
   }
@@ -112,14 +117,15 @@ function checkBodyCollisions(players, segmentGrid) {
 
     const headX = player.x;
     const headY = player.y;
-    const queryR = player.headRadius + cfg.BODY_RADIUS + 5;
+    // Query range covers head radius + max possible body radius + margin
+    const queryR = player.headRadius + 80;
     const candidates = segmentGrid.query(headX, headY, queryR);
 
     for (const seg of candidates) {
       // Skip own body completely
       if (seg.ownerId === player.id) { continue; }
 
-      const threshold = player.headRadius + cfg.BODY_RADIUS * 0.9; // slightly lenient
+      const threshold = player.headRadius + seg.radius * 0.9; // slightly lenient
       if (dist2(headX, headY, seg.x, seg.y) <= threshold * threshold) {
         dying.add(player.id);
         events.push({
