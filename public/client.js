@@ -137,6 +137,10 @@
   function _onError(data) {
     console.error('[HaxxWorm] Server error:', data.message);
     alert(data.message);
+    joinBtn.disabled    = false;
+    joinBtn.textContent = 'ENTER THE ARENA';
+    rejoinBtn.disabled  = false;
+    rejoinBtn.textContent = 'RESPAWN';
   }
 
   // ── UI events ──────────────────────────────────────────────────────────────
@@ -156,8 +160,14 @@
     _send('pr', { name });
   });
 
-  nameInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && state === 'lobby') { joinBtn.click(); }
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      if (state === 'lobby') {
+        joinBtn.click();
+      } else if (state === 'dead') {
+        rejoinBtn.click();
+      }
+    }
   });
 
   // ── State machine ─────────────────────────────────────────────────────────
