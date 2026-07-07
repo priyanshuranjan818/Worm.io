@@ -81,9 +81,10 @@ const Renderer = (() => {
     // Target camera position = head
     _camX = lerp(_camX, head[0], 0.12);
     _camY = lerp(_camY, head[1], 0.12);
-    // Target zoom: shrinks as worm grows (longer = more zoomed out)
-    const targetZoom = 1 / (1 + localPlayer.length * 0.0018);
-    const clampedZoom = Math.max(0.2, Math.min(1.2, targetZoom));
+    // Target zoom: shrinks gently as worm grows (uses square root to prevent excessive zoom-out)
+    const extraLength = Math.max(0, localPlayer.length - 22);
+    const targetZoom = 1 / (1 + Math.sqrt(extraLength) * 0.022);
+    const clampedZoom = Math.max(0.4, Math.min(1.2, targetZoom));
     _zoom = lerp(_zoom, clampedZoom, 0.05);
   }
 

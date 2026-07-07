@@ -118,7 +118,7 @@ function checkBodyCollisions(players, segmentGrid) {
     const headX = player.x;
     const headY = player.y;
     // Query range covers head radius + max possible body radius + margin
-    const queryR = player.headRadius + 80;
+    const queryR = player.headRadius + 120;
     const candidates = segmentGrid.query(headX, headY, queryR);
 
     for (const seg of candidates) {

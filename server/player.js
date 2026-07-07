@@ -101,15 +101,15 @@ class Player {
   get x() { return this.segments[0].x; }
   get y() { return this.segments[0].y; }
 
-  /** Current body radius — scales slightly with size for visual feedback */
+  /** Current body radius — scales with size for visual feedback (fat worm) */
   get bodyRadius() {
     const extra = Math.max(0, this.segments.length - cfg.INITIAL_LENGTH);
-    return cfg.BODY_RADIUS + Math.sqrt(extra) * 0.95;
+    return cfg.BODY_RADIUS + Math.sqrt(extra) * 1.4;
   }
 
   get headRadius() {
     const extra = Math.max(0, this.segments.length - cfg.INITIAL_LENGTH);
-    return cfg.HEAD_RADIUS + Math.sqrt(extra) * 1.05;
+    return cfg.HEAD_RADIUS + Math.sqrt(extra) * 1.5;
   }
 
   // ── Input ─────────────────────────────────────────────────────────
