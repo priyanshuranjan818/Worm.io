@@ -1,0 +1,36 @@
+{
+  "name": "haxxworm-io",
+  "version": "1.0.0",
+  "description": "HaxxWorm.io — Real-time multiplayer worm game. uWebSockets.js + msgpack, production-ready.",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js",
+    "lint": "eslint server/ --ext .js",
+    "lint:fix": "eslint server/ --ext .js --fix"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@msgpack/msgpack": "^3.0.0",
+    "dotenv": "^16.4.5",
+    "pino": "^9.2.0",
+    "pino-pretty": "^11.2.1",
+    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.48.0",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "nodemon": "^3.1.4"
+  },
+  "nodemonConfig": {
+    "watch": ["server/"],
+    "ext": "js,json",
+    "ignore": ["public/"]
+  },
+  "keywords": ["game", "multiplayer", "websocket", "uwebsockets", "canvas", "io-game"],
+  "author": "HaxxWorm.io",
+  "license": "UNLICENSED",
+  "private": true
+}

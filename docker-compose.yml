@@ -1,0 +1,49 @@
+# ─────────────────────────────────────────────────────────────────
+# HaxxWorm.io — docker-compose.yml
+# Local development (Stage A) and staging (Stage B preview)
+# ─────────────────────────────────────────────────────────────────
+version: '3.9'
+
+services:
+
+  # ── Game Server ─────────────────────────────────────────────────
+  game:
+    build:
+      context: .
+      target: production
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - TICK_RATE_HZ=60
+      - BROADCAST_HZ=20
+      - WORLD_WIDTH=14000
+      - WORLD_HEIGHT=14000
+      - MAX_PLAYERS_PER_ARENA=50
+      - LOG_LEVEL=info
+      # Stage D: uncomment when Redis is added
+      # - REDIS_URL=redis://redis:6379
+    volumes:
+      # Hot-reload maps and assets without rebuild
+      - ./maps:/app/maps:ro
+      - ./public/assets:/app/public/assets:ro
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  # ── Redis (Stage D — uncomment when needed) ──────────────────────
+  # redis:
+  #   image: redis:7-alpine
+  #   command: redis-server --appendonly yes
+  #   volumes:
+  #     - redis_data:/data
+  #   ports:
+  #     - "6379:6379"
+  #   restart: unless-stopped
+
+# volumes:
+#   redis_data:

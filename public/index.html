@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080b14" />
+  <title>HaxxWorm.io — Multiplayer Worm Game</title>
+  <meta name="description" content="Real-time multiplayer worm game. Eat, grow, and dominate the arena." />
+
+  <!-- Preconnect for fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- msgpack binary codec (replaces socket.io JSON overhead) -->
+  <script src="https://cdn.jsdelivr.net/npm/@msgpack/msgpack@3/dist.es5+umd/msgpack.min.js"></script>
+</head>
+<body>
+
+  <!-- ── Game Canvas ─────────────────────────────────── -->
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- ── HUD (in-game overlay) ──────────────────────── -->
+  <div id="hud" aria-hidden="true">
+
+    <!-- Kill Feed -->
+    <div id="kill-feed" role="log" aria-live="polite"></div>
+
+    <!-- Leaderboard -->
+    <aside id="leaderboard" aria-label="Leaderboard">
+      <div id="leaderboard-title">TOP PLAYERS</div>
+      <ol id="leaderboard-list"></ol>
+    </aside>
+
+    <!-- Score Bar -->
+    <div id="score-bar">
+      <div class="score-item">
+        <span class="score-label">SCORE</span>
+        <span class="score-value" id="hud-score">0</span>
+      </div>
+      <div class="score-item">
+        <span class="score-label">LEN</span>
+        <span class="score-value" id="hud-length">0</span>
+      </div>
+    </div>
+
+    <!-- Boost Bar -->
+    <div id="boost-bar-wrap" aria-label="Boost meter">
+      <span id="boost-label">BOOST</span>
+      <div id="boost-bar-track">
+        <div id="boost-bar-fill"></div>
+      </div>
+    </div>
+
+    <!-- Minimap -->
+    <div id="minimap" aria-label="Minimap">
+      <canvas id="minimap-canvas" width="130" height="130"></canvas>
+    </div>
+
+  </div>
+
+  <!-- ── Connecting Screen ───────────────────────────── -->
+  <div id="connecting-screen" class="overlay" role="status" aria-label="Connecting">
+    <div class="spinner"></div>
+    <span class="connecting-label">Connecting…</span>
+  </div>
+
+  <!-- ── Join Screen ─────────────────────────────────── -->
+  <div id="join-screen" class="overlay hidden" role="dialog" aria-label="Join game" aria-modal="true">
+    <div class="join-panel">
+      <div class="logo-wrap">
+        <h1 class="logo-title">Haxx<span>Worm</span>.io</h1>
+        <p class="logo-sub">Multiplayer Arena</p>
+      </div>
+
+      <div class="name-input-wrap">
+        <label class="input-label" for="player-name">Your Name</label>
+        <input
+          id="player-name"
+          type="text"
+          maxlength="20"
+          placeholder="Enter your hacker alias…"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        />
+      </div>
+
+      <button id="join-btn" class="join-btn" type="button">
+        ENTER THE ARENA
+      </button>
+
+      <div class="join-hints">
+        <div class="hint">
+          <span class="hint-key">MOUSE</span>
+          <span>steer your worm</span>
+        </div>
+        <div class="hint">
+          <span class="hint-key">HOLD CLICK</span>
+          <span>boost (costs mass)</span>
+        </div>
+        <div class="hint">
+          <span class="hint-key">EAT</span>
+          <span>food to grow longer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Death Screen ────────────────────────────────── -->
+  <div id="death-screen" class="overlay hidden" role="dialog" aria-label="Game over" aria-modal="true">
+    <div class="death-panel">
+      <h2 class="death-title">YOU DIED</h2>
+
+      <div class="death-stats">
+        <div class="death-stat">
+          <span class="ds-label">SCORE</span>
+          <span class="ds-value" id="death-score">0</span>
+        </div>
+        <div class="death-stat">
+          <span class="ds-label">LENGTH</span>
+          <span class="ds-value" id="death-length">0</span>
+        </div>
+        <div class="death-stat">
+          <span class="ds-label">RANK</span>
+          <span class="ds-value" id="death-rank">—</span>
+        </div>
+      </div>
+
+      <p class="death-killer" id="death-killer-text"></p>
+
+      <button id="rejoin-btn" class="rejoin-btn" type="button">
+        RESPAWN
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Game Scripts ────────────────────────────────── -->
+  <script src="input.js"></script>
+  <script src="interpolation.js"></script>
+  <script src="renderer.js"></script>
+  <script src="client.js"></script>
+
+</body>
+</html>

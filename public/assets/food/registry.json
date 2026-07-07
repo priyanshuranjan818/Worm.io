@@ -1,0 +1,50 @@
+{
+  "_comment": "Food type registry — custom food types with sprites. Falls back to canvas drawing if no sprite.",
+  "foodTypes": [
+    {
+      "id": "tiny",
+      "name": "Tiny Pellet",
+      "value": 1,
+      "radius": 5,
+      "colors": ["#00ff41", "#41ff00", "#a8ff3e"],
+      "sprite": null,
+      "glowIntensity": 8
+    },
+    {
+      "id": "small",
+      "name": "Small Pellet",
+      "value": 2,
+      "radius": 7,
+      "colors": ["#39ff14", "#76ff03", "#b2ff59"],
+      "sprite": null,
+      "glowIntensity": 10
+    },
+    {
+      "id": "medium",
+      "name": "Power Bite",
+      "value": 5,
+      "radius": 10,
+      "colors": ["#ffaa00", "#ff8c00", "#ffd700"],
+      "sprite": null,
+      "glowIntensity": 14
+    },
+    {
+      "id": "large",
+      "name": "Energy Core",
+      "value": 12,
+      "radius": 15,
+      "colors": ["#ff3860", "#ff1744", "#ff4081"],
+      "sprite": null,
+      "glowIntensity": 18
+    },
+    {
+      "id": "mega",
+      "name": "Mega Crystal",
+      "value": 30,
+      "radius": 22,
+      "colors": ["#ff00ff", "#e040fb", "#ce93d8"],
+      "sprite": null,
+      "glowIntensity": 24
+    }
+  ]
+}

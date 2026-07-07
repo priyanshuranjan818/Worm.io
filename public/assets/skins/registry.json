@@ -1,0 +1,35 @@
+{
+  "_comment": "Skin registry — add custom skins here. Each entry is loaded at server startup.",
+  "skins": [
+    {
+      "id": "default",
+      "name": "Default",
+      "description": "Classic HaxxWorm skin",
+      "headColor": null,
+      "bodyGradient": null,
+      "eyeStyle": "default",
+      "deathEffect": "pixel_burst",
+      "unlockCriteria": "free"
+    },
+    {
+      "id": "neon_serpent",
+      "name": "Neon Serpent",
+      "description": "Electric cyan with pulse glow",
+      "headColor": "#00fff9",
+      "bodyGradient": ["#00fff9", "#0088aa"],
+      "eyeStyle": "cyber",
+      "deathEffect": "electric_burst",
+      "unlockCriteria": "free"
+    },
+    {
+      "id": "blood_viper",
+      "name": "Blood Viper",
+      "description": "Crimson scales, deadly presence",
+      "headColor": "#ff1744",
+      "bodyGradient": ["#ff1744", "#880000"],
+      "eyeStyle": "slit",
+      "deathEffect": "blood_burst",
+      "unlockCriteria": "free"
+    }
+  ]
+}

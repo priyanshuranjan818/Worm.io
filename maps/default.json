@@ -1,0 +1,18 @@
+{
+  "id": "default",
+  "name": "HaxxWorm Arena",
+  "description": "Default 14000×14000 open arena",
+  "worldWidth": 14000,
+  "worldHeight": 14000,
+  "backgroundColor": "#080b14",
+  "gridColor": "rgba(0,255,65,0.04)",
+  "gridSize": 200,
+  "borderColor": "rgba(0,255,65,0.25)",
+  "obstacles": [],
+  "foodZones": [
+    { "x": 0, "y": 0, "w": 14000, "h": 14000, "densityMultiplier": 1.0 }
+  ],
+  "spawnZone": {
+    "marginFromEdge": 600
+  }
+}
