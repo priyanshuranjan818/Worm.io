@@ -104,12 +104,12 @@ class Player {
   /** Current body radius — scales with size for visual feedback (fat worm) */
   get bodyRadius() {
     const extra = Math.max(0, this.segments.length - cfg.INITIAL_LENGTH);
-    return cfg.BODY_RADIUS + Math.sqrt(extra) * 1.4;
+    return cfg.BODY_RADIUS + Math.sqrt(extra) * 2.5;
   }
 
   get headRadius() {
     const extra = Math.max(0, this.segments.length - cfg.INITIAL_LENGTH);
-    return cfg.HEAD_RADIUS + Math.sqrt(extra) * 1.5;
+    return cfg.HEAD_RADIUS + Math.sqrt(extra) * 2.7;
   }
 
   // ── Input ─────────────────────────────────────────────────────────
@@ -155,9 +155,10 @@ class Player {
     newHead.y = Math.max(cfg.HEAD_RADIUS, Math.min(cfg.WORLD_HEIGHT - cfg.HEAD_RADIUS, newHead.y));
 
     // ── Chain segments ─────────────────────────────────────────────
-    // Each segment follows the one ahead of it, maintaining SEGMENT_SPACING distance.
-    // This produces the classic "rope" movement of worm games.
+    // Each segment follows the one ahead of it, maintaining dynamic spacing.
+    // This scales with body radius so the worm stretches out beautifully as it grows fat, matching Wormate.io.
     const newSegments = [newHead];
+    const spacing = this.bodyRadius * 1.5;
     for (let i = 0; i < this.segments.length - 1; i++) {
       const prev = newSegments[i];
       const curr = this.segments[i]; // old position of segment i
@@ -165,12 +166,12 @@ class Player {
       const dy = prev.y - curr.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
 
-      if (dist <= cfg.SEGMENT_SPACING) {
+      if (dist <= spacing) {
         // Within spacing — stays in place (segment is already close enough)
         newSegments.push({ x: curr.x, y: curr.y });
       } else {
         // Pull toward the segment ahead, maintaining exact spacing
-        const ratio = cfg.SEGMENT_SPACING / dist;
+        const ratio = spacing / dist;
         newSegments.push({
           x: prev.x - dx * ratio,
           y: prev.y - dy * ratio,
