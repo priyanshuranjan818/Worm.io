@@ -116,8 +116,8 @@ function checkBodyCollisions(players, segmentGrid) {
     const candidates = segmentGrid.query(headX, headY, queryR);
 
     for (const seg of candidates) {
-      // Skip own safe zone (first SAFE_SEGMENTS of self)
-      if (seg.ownerId === player.id && seg.segIdx < cfg.SAFE_SEGMENTS) { continue; }
+      // Skip own body completely
+      if (seg.ownerId === player.id) { continue; }
 
       const threshold = player.headRadius + cfg.BODY_RADIUS * 0.9; // slightly lenient
       if (dist2(headX, headY, seg.x, seg.y) <= threshold * threshold) {
