@@ -122,6 +122,13 @@ const InterpolationBuffer = (() => {
 
   const _lerp = (a, b, t) => a + (b - a) * t;
 
+  function _lerpAngle(from, to, t) {
+    let diff = to - from;
+    while (diff > Math.PI)  { diff -= 2 * Math.PI; }
+    while (diff < -Math.PI) { diff += 2 * Math.PI; }
+    return from + diff * t;
+  }
+
   function _lerpSegments(prev, curr, t) {
     const len    = Math.max(prev.length, curr.length);
     const result = [];
@@ -162,7 +169,9 @@ const InterpolationBuffer = (() => {
         color:    curr.c,
         skin:     curr.sk,
         segments: segments,
-        angle:    curr.a,  // angle not interpolated (causes visual artifacts)
+        angle:    id === _localPlayerId && typeof InputManager !== 'undefined'
+          ? InputManager.getAngle()
+          : _lerpAngle(prev.a, curr.a, Math.min(t, 1)),
         score:    curr.sc,
         boosting: curr.b === 1,
         length:   curr.l,

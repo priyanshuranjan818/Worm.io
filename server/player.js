@@ -123,10 +123,8 @@ class Player {
    */
   applyInput(targetAngle, boosting) {
     if (!this.alive) { return; }
-    // Clamp turn rate — worm cannot snap instantly to a new direction
-    const diff   = angleDiff(targetAngle, this.angle);
-    const clamped = Math.max(-cfg.MAX_TURN_RATE, Math.min(cfg.MAX_TURN_RATE, diff));
-    this.angle    = normaliseAngle(this.angle + clamped);
+    // Instant steering to match Wormate.io/Slither.io controls
+    this.angle = normaliseAngle(targetAngle);
     // Only allow boost if worm is long enough
     this.boosting = boosting && (this.segments.length > cfg.MIN_BOOST_LENGTH);
   }

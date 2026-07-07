@@ -38,7 +38,17 @@ const InputManager = (() => {
     const rect = _canvas ? _canvas.getBoundingClientRect() : null;
     const mx   = rect ? e.clientX - rect.left : e.clientX;
     const my   = rect ? e.clientY - rect.top  : e.clientY;
-    const newAngle = Math.atan2(my - _cy, mx - _cx);
+
+    // Calculate angle relative to the head's actual screen position (compensates for camera lag and offsets)
+    let cx = _cx;
+    let cy = _cy;
+    if (typeof Renderer !== 'undefined' && typeof Renderer.getLocalHeadScreenPos === 'function') {
+      const headPos = Renderer.getLocalHeadScreenPos();
+      cx = headPos.x;
+      cy = headPos.y;
+    }
+
+    const newAngle = Math.atan2(my - cy, mx - cx);
     if (newAngle !== _angle) {
       _angle = newAngle;
       _dirty = true;

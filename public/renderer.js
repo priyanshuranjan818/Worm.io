@@ -424,6 +424,18 @@ const Renderer = (() => {
     _drawMinimap(players, food, localPlayer);
   }
 
+  function getLocalHeadScreenPos() {
+    const localPlayer = InterpolationBuffer.getLocalPlayer();
+    if (!localPlayer || !localPlayer.s || !localPlayer.s[0]) {
+      return { x: _W / 2, y: _H / 2 };
+    }
+    const head = localPlayer.s[0];
+    return {
+      x: _W / 2 + (head[0] - _camX) * _zoom,
+      y: _H / 2 + (head[1] - _camY) * _zoom,
+    };
+  }
+
   // ── Public API ─────────────────────────────────────────────────────────
 
   return {
@@ -434,6 +446,7 @@ const Renderer = (() => {
     setLeaderboard,
     updateLeaderboard,
     spawnDeathParticles,
+    getLocalHeadScreenPos,
     frame,
   };
 })();
