@@ -35,6 +35,11 @@ const Renderer = (() => {
   let _camY  = 0;
   let _zoom  = 1;
 
+  // ── Map Texture ───────────────────────────────────────────────────────
+  const _mapTexture = new Image();
+  _mapTexture.src = 'assets/map_background.png?v=2';
+  let _mapPattern = null;
+
   // ── Leaderboard cache ─────────────────────────────────────────────────
   let _leaderboard    = [];
   let _localPlayerId  = null;
@@ -91,28 +96,39 @@ const Renderer = (() => {
 
   function _drawGrid(ctx) {
     ctx.save();
-    ctx.strokeStyle = GRID_COLOR;
-    ctx.lineWidth   = 1;
 
-    // Compute visible grid range in world space
-    const vLeft  = _camX - (_W / 2) / _zoom;
-    const vTop   = _camY - (_H / 2) / _zoom;
-    const vRight  = _camX + (_W / 2) / _zoom;
-    const vBottom = _camY + (_H / 2) / _zoom;
-
-    const startX = Math.floor(vLeft  / GRID_SIZE) * GRID_SIZE;
-    const startY = Math.floor(vTop   / GRID_SIZE) * GRID_SIZE;
-
-    ctx.beginPath();
-    for (let x = startX; x <= vRight; x += GRID_SIZE) {
-      ctx.moveTo(x, Math.max(0, vTop));
-      ctx.lineTo(x, Math.min(_worldH, vBottom));
+    // Create pattern once image loaded
+    if (!_mapPattern && _mapTexture.complete) {
+      _mapPattern = ctx.createPattern(_mapTexture, 'repeat');
     }
-    for (let y = startY; y <= vBottom; y += GRID_SIZE) {
-      ctx.moveTo(Math.max(0, vLeft), y);
-      ctx.lineTo(Math.min(_worldW, vRight), y);
+
+    if (_mapPattern) {
+      ctx.fillStyle = _mapPattern;
+      ctx.fillRect(0, 0, _worldW, _worldH);
+    } else {
+      // Fallback to neon grid lines
+      ctx.strokeStyle = GRID_COLOR;
+      ctx.lineWidth   = 1;
+
+      const vLeft  = _camX - (_W / 2) / _zoom;
+      const vTop   = _camY - (_H / 2) / _zoom;
+      const vRight  = _camX + (_W / 2) / _zoom;
+      const vBottom = _camY + (_H / 2) / _zoom;
+
+      const startX = Math.floor(vLeft  / GRID_SIZE) * GRID_SIZE;
+      const startY = Math.floor(vTop   / GRID_SIZE) * GRID_SIZE;
+
+      ctx.beginPath();
+      for (let x = startX; x <= vRight; x += GRID_SIZE) {
+        ctx.moveTo(x, Math.max(0, vTop));
+        ctx.lineTo(x, Math.min(_worldH, vBottom));
+      }
+      for (let y = startY; y <= vBottom; y += GRID_SIZE) {
+        ctx.moveTo(Math.max(0, vLeft), y);
+        ctx.lineTo(Math.min(_worldW, vRight), y);
+      }
+      ctx.stroke();
     }
-    ctx.stroke();
     ctx.restore();
   }
 

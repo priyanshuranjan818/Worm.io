@@ -4,7 +4,7 @@
 # ─────────────────────────────────────────────────────────────────
 
 # ── Stage 1: Install dependencies ────────────────────────────────
-FROM node:20-alpine AS deps
+FROM node:20-slim AS deps
 
 WORKDIR /app
 
@@ -13,11 +13,11 @@ COPY package*.json ./
 RUN npm ci --only=production
 
 # ── Stage 2: Production image ────────────────────────────────────
-FROM node:20-alpine AS production
+FROM node:20-slim AS production
 
 # Security: run as non-root user
-RUN addgroup -g 1001 -S haxxworm && \
-    adduser  -u 1001 -S haxxworm -G haxxworm
+RUN groupadd -g 1001 haxxworm && \
+    useradd -u 1001 -g haxxworm -s /bin/sh haxxworm
 
 WORKDIR /app
 
@@ -38,9 +38,9 @@ USER haxxworm
 # Expose game server port
 EXPOSE 3000
 
-# Health check for ECS/Kubernetes/ALB
+# Health check using built-in node fetch
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD wget -qO- http://localhost:3000/health || exit 1
+  CMD node -e "fetch('http://localhost:3000/health').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))"
 
 # Environment
 ENV NODE_ENV=production

@@ -12,10 +12,10 @@ services:
       context: .
       target: production
     ports:
-      - "3000:3000"
+      - "${PORT:-3000}:${PORT:-3000}"
     environment:
       - NODE_ENV=development
-      - PORT=3000
+      - PORT=${PORT:-3000}
       - TICK_RATE_HZ=60
       - BROADCAST_HZ=20
       - WORLD_WIDTH=14000
